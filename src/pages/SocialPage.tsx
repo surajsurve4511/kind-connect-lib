@@ -1,116 +1,138 @@
-import { Users, Calendar, Gift, PartyPopper, Heart, MapPin } from "lucide-react";
+import { Users, Gift, Calendar, Star, Phone, Heart, MessageSquare, Globe2, Clock, Send, Cake } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { socialData } from "@/data/mockData";
+import { couplesFriendsList, giftTracker, socialCalendar, relationshipMap, hospitalityLog } from "@/data/extendedMockData";
+import { LifeStageHeader } from "@/components/shared/LifeStageHeader";
 
 export default function SocialPage() {
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
-      <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-2xl bg-mint flex items-center justify-center">
-          <Users className="w-5 h-5 text-primary-foreground" />
-        </div>
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold">Social Life & Experiences</h1>
-          <p className="text-sm text-muted-foreground">Staying connected with the people you love</p>
+          <div className="flex items-center gap-2 mb-2"><LifeStageHeader /></div>
+          <h1 className="font-display text-2xl font-bold flex items-center gap-2"><Users className="w-6 h-6 text-mint" /> Social & Community</h1>
+          <p className="text-sm text-muted-foreground">Nurture friendships and stay connected</p>
         </div>
       </div>
 
-      <Tabs defaultValue="calendar" className="space-y-4">
-        <TabsList className="bg-muted/50 rounded-xl p-1">
-          <TabsTrigger value="calendar" className="rounded-lg">Social Calendar</TabsTrigger>
-          <TabsTrigger value="celebrations" className="rounded-lg">Celebrations</TabsTrigger>
-          <TabsTrigger value="gifts" className="rounded-lg">Gift Manager</TabsTrigger>
-          <TabsTrigger value="community" className="rounded-lg">Community</TabsTrigger>
+      <Tabs defaultValue="friends" className="w-full">
+        <TabsList className="w-full flex flex-wrap h-auto gap-1 bg-muted/30 p-1 rounded-2xl">
+          {["friends", "gifts", "events", "calendar", "relationship-map", "hospitality", "volunteering"].map(t => (
+            <TabsTrigger key={t} value={t} className="rounded-xl text-xs capitalize">{t.replace(/-/g, " ")}</TabsTrigger>
+          ))}
         </TabsList>
 
-        <TabsContent value="calendar" className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {socialData.upcomingEvents.map(e => (
-              <Card key={e.id} className="pillar-card hover:border-primary/30 cursor-pointer">
-                <CardContent className="p-5 flex items-center gap-4">
-                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
-                    e.type === "birthday" ? "bg-coral-light" :
-                    e.type === "wedding" ? "bg-rose-light" :
-                    e.type === "social" ? "bg-sky-light" : "bg-lavender-light"
-                  }`}>
-                    <span className="text-xl">{e.type === "birthday" ? "🎂" : e.type === "wedding" ? "💒" : e.type === "social" ? "🎉" : "📚"}</span>
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-semibold">{e.title}</p>
-                    <p className="text-[10px] text-muted-foreground">{e.date}</p>
-                  </div>
-                  <span className={`text-[10px] px-2 py-1 rounded-full ${
-                    e.rsvp === "going" ? "bg-mint-light text-mint" : "bg-amber-light text-amber"
-                  }`}>{e.rsvp}</span>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="celebrations" className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {socialData.celebrations.map((c, i) => (
-              <Card key={i} className={`pillar-card ${c.daysUntil < 0 ? "opacity-60" : ""}`}>
-                <CardContent className="p-5 text-center">
-                  <div className="text-3xl mb-2">{c.title.includes("Valentine") ? "💕" : c.title.includes("Birthday") ? "🎂" : "💍"}</div>
-                  <p className="font-semibold text-sm">{c.title}</p>
-                  <p className="text-[10px] text-muted-foreground">{c.date}</p>
-                  {c.daysUntil > 0 ? (
-                    <p className="text-sm font-bold text-primary mt-2">{c.daysUntil} days away</p>
-                  ) : (
-                    <p className="text-sm text-muted-foreground mt-2">Past</p>
-                  )}
-                  <span className={`inline-block mt-2 text-[10px] px-2 py-1 rounded-full ${c.planned ? "bg-mint-light text-mint" : "bg-amber-light text-amber"}`}>
-                    {c.planned ? "Planned ✓" : "Not yet planned"}
-                  </span>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="gifts" className="space-y-4">
+        {/* FRIENDS */}
+        <TabsContent value="friends" className="space-y-6 mt-4">
           <Card className="pillar-card">
-            <CardHeader className="pb-2">
-              <CardTitle className="font-display text-base flex items-center gap-2">
-                <Gift className="w-4 h-4" /> Gift Tracker
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {socialData.giftTracker.map((g, i) => (
-                <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-muted/30">
-                  <div className="text-xl">🎁</div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">{g.person} — {g.occasion}</p>
-                    <p className="text-[10px] text-muted-foreground">{g.date} • Budget: ${g.budget}</p>
-                    {g.idea && <p className="text-xs text-muted-foreground mt-0.5">Idea: {g.idea}</p>}
+            <CardHeader className="pb-2"><CardTitle className="font-display text-lg">Couple's Friends</CardTitle></CardHeader>
+            <CardContent className="space-y-2">
+              {couplesFriendsList.map(f => (
+                <div key={f.id} className="flex items-center gap-3 p-3 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors">
+                  <div className="w-10 h-10 rounded-full bg-mint-light flex items-center justify-center text-sm font-bold">{f.name.split(" ").map(w => w[0]).join("")}</div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium">{f.name}</p>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className="text-[10px]">{f.connection}</Badge>
+                      {f.birthday && <span className="text-xs text-muted-foreground flex items-center gap-1"><Cake className="w-3 h-3" /> {f.birthday}</span>}
+                    </div>
                   </div>
-                  <span className={`text-[10px] px-2 py-1 rounded-full ${
-                    g.status === "purchased" ? "bg-mint-light text-mint" :
-                    g.status === "planned" ? "bg-sky-light text-sky" : "bg-amber-light text-amber"
-                  }`}>{g.status}</span>
+                  <div className="text-right">
+                    <p className="text-xs text-muted-foreground">Last: {f.lastContact.slice(5)}</p>
+                    <Badge variant={f.needsAttention ? "destructive" : "secondary"} className="text-[10px]">
+                      {f.needsAttention ? "Reach out" : "Recent"}
+                    </Badge>
+                  </div>
+                </div>
+              ))}
+              <button className="w-full py-2 rounded-xl border-2 border-dashed border-primary/30 text-primary text-sm">+ Add Friend</button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* GIFTS */}
+        <TabsContent value="gifts" className="space-y-6 mt-4">
+          <Card className="pillar-card">
+            <CardHeader className="pb-2"><CardTitle className="font-display text-lg flex items-center gap-2"><Gift className="w-5 h-5 text-amber" /> Gift Tracker</CardTitle></CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground mb-2">UPCOMING</p>
+                  <div className="space-y-2">
+                    {giftTracker.filter(g => g.status === "need").map(g => (
+                      <div key={g.id} className="flex items-center gap-3 p-3 rounded-xl bg-amber-light/50">
+                        <Gift className="w-5 h-5 text-amber shrink-0" />
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">{g.person} — {g.occasion}</p>
+                          <p className="text-xs text-muted-foreground">Budget: ${g.budget} • Date: {g.date}</p>
+                        </div>
+                        <Badge variant="secondary" className="text-[10px]">Needs idea</Badge>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground mb-2">GIVEN</p>
+                  <div className="space-y-2">
+                    {giftTracker.filter(g => g.status === "given").map(g => (
+                      <div key={g.id} className="flex items-center gap-3 p-3 rounded-xl bg-muted/30">
+                        <Gift className="w-5 h-5 text-muted-foreground shrink-0" />
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">{g.person} — {g.occasion}</p>
+                          <p className="text-xs text-muted-foreground">{g.ideaGiven}</p>
+                        </div>
+                        <Badge variant="default" className="text-[10px]">✓ Given</Badge>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* EVENTS */}
+        <TabsContent value="events" className="space-y-6 mt-4">
+          <Card className="pillar-card">
+            <CardHeader className="pb-2"><CardTitle className="font-display text-lg">Upcoming Events</CardTitle></CardHeader>
+            <CardContent className="space-y-2">
+              {socialData.upcomingEvents.map(e => (
+                <div key={e.id} className="flex items-center gap-3 p-3 rounded-xl bg-muted/30 hover:bg-muted/50 transition-colors">
+                  <div className="w-10 h-10 rounded-xl bg-mint-light flex items-center justify-center text-sm font-bold">
+                    {e.date.split("-")[2]}
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">{e.title}</p>
+                    <p className="text-xs text-muted-foreground">{e.type} • {e.date}</p>
+                  </div>
+                  <Badge variant="secondary" className="text-[10px]">{e.rsvp}</Badge>
                 </div>
               ))}
             </CardContent>
           </Card>
+        </TabsContent>
 
+        {/* CALENDAR */}
+        <TabsContent value="calendar" className="space-y-6 mt-4">
           <Card className="pillar-card">
-            <CardHeader className="pb-2">
-              <CardTitle className="font-display text-base">🤖 AI Gift Suggestions</CardTitle>
-            </CardHeader>
+            <CardHeader className="pb-2"><CardTitle className="font-display text-lg flex items-center gap-2"><Calendar className="w-5 h-5 text-mint" /> Social Calendar</CardTitle></CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {[
-                  { person: "Mom", suggestion: "Luxury spa day voucher", price: "$89", match: "95%" },
-                  { person: "Best Friend", suggestion: "Artisan cookbook set", price: "$65", match: "88%" },
-                  { person: "Dad", suggestion: "Premium golf gloves", price: "$45", match: "92%" },
-                ].map((s, i) => (
-                  <div key={i} className="p-4 rounded-2xl bg-lavender-light/30 text-center">
-                    <p className="text-xs text-muted-foreground">For {s.person}</p>
-                    <p className="text-sm font-semibold mt-1">{s.suggestion}</p>
-                    <p className="text-xs text-muted-foreground mt-1">{s.price} • {s.match} match</p>
+              <div className="space-y-3">
+                {socialCalendar.map(d => (
+                  <div key={d.id} className="flex items-center gap-3 p-3 rounded-xl bg-muted/30">
+                    <div className="w-14 text-center shrink-0">
+                      <p className="text-sm font-bold">{d.date.split("-")[2]}</p>
+                      <p className="text-[10px] text-muted-foreground">{["Jan", "Feb", "Mar", "Apr", "May", "Jun"][parseInt(d.date.split("-")[1]) - 1]}</p>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium">{d.event}</p>
+                      <p className="text-xs text-muted-foreground">{d.type} • {d.who.join(", ")}</p>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {d.confirmed && <Badge variant="default" className="text-[10px]">✓ Confirmed</Badge>}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -118,25 +140,73 @@ export default function SocialPage() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="community" className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              { name: "Neighborhood Clean-up", type: "Volunteer", date: "March 15", emoji: "🌿" },
-              { name: "Couples Book Club", type: "Social Group", date: "Every 2nd Thursday", emoji: "📚" },
-              { name: "Community Garden", type: "Volunteer", date: "Weekends", emoji: "🌻" },
-              { name: "Hiking Group", type: "Activity", date: "Saturdays", emoji: "🥾" },
-            ].map((c, i) => (
-              <Card key={i} className="pillar-card hover:border-primary/30 cursor-pointer">
-                <CardContent className="p-5 flex items-center gap-4">
-                  <div className="text-3xl">{c.emoji}</div>
-                  <div>
-                    <p className="text-sm font-semibold">{c.name}</p>
-                    <p className="text-[10px] text-muted-foreground">{c.type} • {c.date}</p>
+        {/* RELATIONSHIP MAP */}
+        <TabsContent value="relationship-map" className="space-y-6 mt-4">
+          <Card className="pillar-card">
+            <CardHeader className="pb-2"><CardTitle className="font-display text-lg flex items-center gap-2"><Heart className="w-5 h-5 text-primary" /> Relationship Map</CardTitle></CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {Object.entries(relationshipMap).map(([tier, people]) => (
+                  <div key={tier}>
+                    <p className="text-xs font-semibold text-muted-foreground mb-2 uppercase">{tier.replace("tier", "Tier ").replace("1", "1 — Inner Circle").replace("2", "2 — Close Friends").replace("3", "3 — Extended")}</p>
+                    <div className="space-y-2">
+                      {people.map((p, i) => (
+                        <div key={i} className="flex items-center gap-2 p-2 rounded-xl bg-muted/30">
+                          <div className="w-8 h-8 rounded-full bg-mint-light flex items-center justify-center text-xs font-bold">{p.name[0]}</div>
+                          <div>
+                            <p className="text-sm font-medium">{p.name}</p>
+                            <p className="text-[10px] text-muted-foreground">{p.relation}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* HOSPITALITY */}
+        <TabsContent value="hospitality" className="space-y-6 mt-4">
+          <Card className="pillar-card">
+            <CardHeader className="pb-2"><CardTitle className="font-display text-lg">Hospitality Log</CardTitle></CardHeader>
+            <CardContent className="space-y-3">
+              {hospitalityLog.map(h => (
+                <div key={h.id} className="p-3 rounded-xl bg-muted/30">
+                  <div className="flex items-center justify-between mb-1">
+                    <p className="font-semibold text-sm">{h.event}</p>
+                    <Badge variant="secondary" className="text-[10px]">{h.date}</Badge>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Guests: {h.guests.join(", ")}</p>
+                  <p className="text-xs text-muted-foreground mt-1">Feedback: {h.feedback}</p>
+                </div>
+              ))}
+              <button className="w-full py-2 rounded-xl border-2 border-dashed border-primary/30 text-primary text-sm">+ Plan New Event</button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* VOLUNTEERING */}
+        <TabsContent value="volunteering" className="space-y-6 mt-4">
+          <Card className="pillar-card">
+            <CardHeader className="pb-2"><CardTitle className="font-display text-lg flex items-center gap-2"><Globe2 className="w-5 h-5 text-mint" /> Community & Volunteering</CardTitle></CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {[
+                  { id: 1, org: "Local Food Bank", role: "Volunteer", hoursPerMonth: 8, impact: "100+ meals served" },
+                  { id: 2, org: "Animal Shelter", role: "Dog Walker", hoursPerMonth: 6, impact: "12 dogs walked weekly" },
+                ].map(v => (
+                  <div key={v.id} className="p-4 rounded-xl bg-muted/30">
+                    <p className="font-semibold text-sm">{v.org}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{v.role} • {v.hoursPerMonth}h/month</p>
+                    <Badge variant="secondary" className="text-[10px] mt-1">{v.impact}</Badge>
+                  </div>
+                ))}
+                <button className="w-full py-2 rounded-xl border-2 border-dashed border-primary/30 text-primary text-sm">+ Find Opportunities</button>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>

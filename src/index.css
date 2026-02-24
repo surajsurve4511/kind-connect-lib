@@ -139,7 +139,65 @@
     background: linear-gradient(135deg, hsl(var(--mint)), hsl(var(--sky)));
   }
 
+  .gradient-amber {
+    background: linear-gradient(135deg, hsl(var(--amber)), hsl(var(--coral)));
+  }
+
+  .gradient-lavender {
+    background: linear-gradient(135deg, hsl(var(--lavender)), hsl(var(--rose)));
+  }
+
   .pillar-card {
     @apply rounded-2xl border border-border/50 bg-card p-5 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5;
   }
+
+  .pillar-card-static {
+    @apply rounded-2xl border border-border/50 bg-card p-5 shadow-sm;
+  }
+
+  /* Pillar color badges */
+  .pillar-relationship { @apply bg-coral-light text-coral; }
+  .pillar-household { @apply bg-sky-light text-sky; }
+  .pillar-financial { @apply bg-mint-light text-mint; }
+  .pillar-family { @apply bg-amber-light text-amber; }
+  .pillar-health { @apply bg-lavender-light text-lavender; }
+  .pillar-career { @apply bg-sky-light text-sky; }
+  .pillar-future { @apply bg-coral-light text-coral; }
+  .pillar-social { @apply bg-mint-light text-mint; }
 }
+
+/* Animations */
+@keyframes confetti {
+  0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translateY(-200px) rotate(720deg) scale(0); }
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fade-in-up {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-right {
+  0% { opacity: 0; transform: translateX(30px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+.animate-confetti { animation: confetti 2s ease-out forwards; }
+.animate-bounce-in { animation: bounce-in 0.6s ease-out forwards; }
+.animate-fade-in-up { animation: fade-in-up 0.4s ease-out forwards; }
+.animate-slide-in-right { animation: slide-in-right 0.3s ease-out forwards; }
+
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+.stagger-7 { animation-delay: 0.35s; }
+.stagger-8 { animation-delay: 0.4s; }

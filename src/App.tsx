@@ -15,6 +15,14 @@ import FuturePage from "./pages/FuturePage";
 import SocialPage from "./pages/SocialPage";
 import AIAssistantPage from "./pages/AIAssistantPage";
 import SettingsPage from "./pages/SettingsPage";
+import OnboardingPage from "./pages/OnboardingPage";
+import LifeTimelinePage from "./pages/LifeTimelinePage";
+import EmergencyInfoPage from "./pages/EmergencyInfoPage";
+import CoupleGoalsPage from "./pages/CoupleGoalsPage";
+import DocumentsVaultPage from "./pages/DocumentsVaultPage";
+import AcademyPage from "./pages/AcademyPage";
+import WellbeingCheckInPage from "./pages/WellbeingCheckInPage";
+import ActivityFeedPage from "./pages/ActivityFeedPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +34,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          <Route path="/onboarding" element={<OnboardingPage />} />
           <Route element={<AppLayout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/relationship" element={<RelationshipPage />} />
@@ -38,6 +47,13 @@ const App = () => (
             <Route path="/social" element={<SocialPage />} />
             <Route path="/ai-assistant" element={<AIAssistantPage />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/life-timeline" element={<LifeTimelinePage />} />
+            <Route path="/emergency" element={<EmergencyInfoPage />} />
+            <Route path="/couple-goals" element={<CoupleGoalsPage />} />
+            <Route path="/documents" element={<DocumentsVaultPage />} />
+            <Route path="/academy" element={<AcademyPage />} />
+            <Route path="/wellbeing" element={<WellbeingCheckInPage />} />
+            <Route path="/activity" element={<ActivityFeedPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
